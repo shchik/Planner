@@ -1,0 +1,42 @@
+.form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100vh;
+	background-color: lightgray;
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-image: url("../../../public/auth-background-image.avif");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+		padding: 3rem 2rem;
+		border-radius: 2rem;
+		width: clamp(280px, 50%, 800px);
+	}
+
+	&__change_auth {
+		display: flex;
+	}
+
+	&__submit_button {
+		background-color: blueviolet;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		color: navy;
+		transition: all 0.15s;
+		margin: 10px 0px;
+
+		&:hover {
+			background-color: mediumpurple;
+		}
+		&:active {
+			opacity: 0.8;
+		}
+	}
+}

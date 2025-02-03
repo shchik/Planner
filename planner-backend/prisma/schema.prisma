@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+
+  tasks Task[]
+  user_Pomodoro_Settings User_Pomodoro_Settings[]
+  pomodoroTimers PomodoroTimer[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user")
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  name        String
+  isCompleted Boolean   @default(false) @map("is_completed")
+  priority    Priority
+  taskDate    TaskDate @map("task_date")
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("task")
+}
+
+model User_Pomodoro_Settings {
+  id Int @id @default(autoincrement())
+  workInterval Int @map("work_interval") @default(50)
+  breakInterval Int @map("break_interval")  @default(10)
+  intervalsCount Int @map("intervals_count")  @default(6)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @map("user_id") @unique
+
+  @@map("user_pomodoro_settings")
+}
+
+model PomodoroTimer{
+  id Int @id @default(autoincrement())
+  timeLeft Int? @map("time_left")
+  cyclesCount Int? @map("cycles_count")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @map("user_id") @unique
+
+  @@map("pomodoro_timer")
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum TaskDate {
+  Today
+  Tomorrow
+  Week
+  Month
+}

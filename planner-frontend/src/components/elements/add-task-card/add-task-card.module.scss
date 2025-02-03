@@ -1,0 +1,90 @@
+.task_container {
+	background-color: gray;
+	padding: 10px;
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 20px;
+	min-height: 23vh;
+	position: relative;
+
+	.close_icon {
+		position: absolute;
+		right: 2%;
+		top: 5%;
+		cursor: pointer;
+	}
+
+	input {
+		padding: 5px;
+		width: 85%;
+		outline: none;
+		border: none;
+		border-radius: 6px;
+		background-color: gold;
+		color: black;
+	}
+
+	select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+
+		padding: 5px;
+		width: 40%;
+		border: none;
+		outline: none;
+		border-radius: 6px;
+	}
+
+	.actions {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10px;
+
+		button {
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+	}
+
+	.priority {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		padding: 5px;
+		width: 40%;
+		border: none;
+		outline: none;
+		border-radius: 12px;
+		color: white;
+		text-align: center;
+		background-color: lightgray;
+
+		&.low {
+			background-color: deepskyblue;
+		}
+
+		&.medium {
+			background-color: gold;
+		}
+
+		&.high {
+			background-color: firebrick;
+		}
+	}
+
+	.add_button {
+		background-color: silver;
+		padding: 6px 9px;
+		border-radius: 8px;
+		border: none;
+		cursor: pointer;
+
+		&:hover {
+			box-shadow: inset 1px 1px 4px rgba($color: #000000, $alpha: 0.15);
+		}
+		&:active {
+			opacity: 0.8;
+		}
+	}
+}

@@ -1,0 +1,18 @@
+.field {
+	margin: 5px 0px;
+	width: 100%;
+
+	p {
+		margin-bottom: 4px;
+	}
+
+	input {
+		background-color: rgb(23, 0, 128);
+		outline: none;
+		border: none;
+		border-radius: 5px;
+		padding: 5px 10px;
+		width: 45%;
+		color: white;
+	}
+}
