@@ -1,11 +1,16 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const Home = () => {
-	const { push } = useRouter();
-	push("/i/tasks");
-	return <div></div>;
-};
+	const { push } = useRouter()
 
-export default Home;
+	useEffect(() => {
+		push('/i/tasks')
+	}, [])
+
+	return <div></div>
+}
+
+export default Home

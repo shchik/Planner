@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import GlobalLoader from "@/components/layouts/dashboard-layout/header/global-loader";
-import { Button } from "@/components/UI/buttons/button";
-import { useProfile } from "@/hooks/useProfile";
-import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-import { PomodoroTimerService } from "@/services/pomodoro-timer-service";
+import GlobalLoader from '@/components/layouts/dashboard-layout/header/global-loader'
+import { Button } from '@/components/UI/buttons/button'
+import { useProfile } from '@/hooks/useProfile'
+import { useUpdateSettings } from '@/hooks/useUpdateSettings'
+import { PomodoroTimerService } from '@/services/pomodoro-timer-service'
 import {
 	IPomodoroSettingsUpdateData,
 	PomodoroSettingsType,
-} from "@/types/pomodoro-settings.types";
-import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import s from "./settings.module.scss";
+} from '@/types/pomodoro-settings.types'
+import React from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import s from './settings.module.scss'
 
 const SettingsView: React.FC = () => {
-	const { data } = useProfile();
-	const pomodoroTimerService = new PomodoroTimerService();
+	const { data } = useProfile()
+	const pomodoroTimerService = new PomodoroTimerService()
 	const [pomodoroSettings, setPomodoroSettings] =
-		React.useState<PomodoroSettingsType | null>();
+		React.useState<PomodoroSettingsType | null>()
 
 	React.useEffect(() => {
 		if (data?.pomodoroSettings) {
@@ -25,31 +25,33 @@ const SettingsView: React.FC = () => {
 				workInterval: data.pomodoroSettings.workInterval,
 				breakInterval: data.pomodoroSettings.breakInterval,
 				intervalsCount: data.pomodoroSettings.intervalsCount,
-			}));
+			}))
 		}
-	}, [data]);
+	}, [data])
 
 	const { register, handleSubmit, reset } =
 		useForm<IPomodoroSettingsUpdateData>({
-			mode: "onChange",
-			defaultValues: pomodoroSettings!,
-		});
+			mode: 'onChange',
+		})
 
 	React.useEffect(() => {
 		if (pomodoroSettings) {
-			reset(pomodoroSettings);
+			reset(pomodoroSettings)
 		}
-	}, [pomodoroSettings, reset]);
+	}, [pomodoroSettings, reset])
 
-	const { mutate, isLoading } = useUpdateSettings();
+	const { mutate, isLoading } = useUpdateSettings()
 
 	const onSubmit: SubmitHandler<IPomodoroSettingsUpdateData> = data => {
-		mutate(data);
+		mutate(data)
+		console.log(data)
 		pomodoroTimerService.updatePomodoroTimer({
 			timeLeft: data.workInterval! * 60,
 			cyclesCount: 0,
-		});
-	};
+		})
+	}
+
+	console.log(pomodoroSettings?.workInterval)
 
 	return (
 		<>
@@ -63,8 +65,8 @@ const SettingsView: React.FC = () => {
 							type="number"
 							min={1}
 							max={59}
-							defaultValue={pomodoroSettings?.workInterval}
-							{...register("workInterval", {
+							defaultValue={50}
+							{...register('workInterval', {
 								valueAsNumber: true,
 							})}
 						/>
@@ -72,11 +74,11 @@ const SettingsView: React.FC = () => {
 					<div className={s.settings__field}>
 						<label>Break interval</label>
 						<input
-							defaultValue={pomodoroSettings?.breakInterval}
+							defaultValue={10}
 							type="number"
 							min={1}
 							max={59}
-							{...register("breakInterval", {
+							{...register('breakInterval', {
 								valueAsNumber: true,
 							})}
 						/>
@@ -88,7 +90,7 @@ const SettingsView: React.FC = () => {
 							type="number"
 							min={1}
 							max={12}
-							{...register("intervalsCount", {
+							{...register('intervalsCount', {
 								valueAsNumber: true,
 							})}
 						/>
@@ -98,10 +100,10 @@ const SettingsView: React.FC = () => {
 					</Button>
 				</form>
 			) : (
-				""
+				''
 			)}
 		</>
-	);
-};
+	)
+}
 
-export default SettingsView;
+export default SettingsView

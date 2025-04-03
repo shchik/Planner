@@ -1,97 +1,96 @@
-"use client";
+'use client'
 
-import { useTimer } from "@/hooks/pomodoro/useTimer";
-import { useUpdateTimer } from "@/hooks/pomodoro/useUpdateTimer";
-import { useProfile } from "@/hooks/useProfile";
-import { PomodoroSettingsType } from "@/types/pomodoro-settings.types";
-import { ArrowLeft, ArrowRight, Pause, Play, RefreshCcw } from "lucide-react";
-import React from "react";
-import s from "./pomodoro.module.scss";
+import { useTimer } from '@/hooks/pomodoro/useTimer'
+import { useUpdateTimer } from '@/hooks/pomodoro/useUpdateTimer'
+import { useProfile } from '@/hooks/useProfile'
+import { PomodoroSettingsType } from '@/types/pomodoro-settings.types'
+import { ArrowLeft, ArrowRight, Pause, Play, RefreshCcw } from 'lucide-react'
+import React from 'react'
+import s from './pomodoro.module.scss'
 
 export type PomodoroTimerType = {
-	timeLeft: number;
-	cyclesCount: number;
-};
+	timeLeft: number
+	cyclesCount: number
+}
 
 const PomodoroView: React.FC = () => {
-	const { data } = useProfile();
-	const [isRunning, setIsRunning] = React.useState(false);
+	const { data } = useProfile()
+	const [isRunning, setIsRunning] = React.useState(false)
 
 	const [pomodoroSettings, setPomodoroSettings] =
 		React.useState<PomodoroSettingsType>({
 			workInterval: 0,
 			breakInterval: 0,
 			intervalsCount: 0,
-		});
+		})
 
-	const { pomodoroTimer } = useTimer();
-	const { updateTimer } = useUpdateTimer();
+	const { pomodoroTimer } = useTimer()
+	const { updateTimer } = useUpdateTimer()
 
 	React.useEffect(() => {
 		setPomodoroSettings({
 			workInterval: data?.pomodoroSettings.workInterval!,
 			breakInterval: data?.pomodoroSettings.breakInterval!,
 			intervalsCount: data?.pomodoroSettings.intervalsCount!,
-		});
-	}, [data]);
+		})
+	}, [data])
 
 	React.useEffect(() => {
-		if (!isRunning || !pomodoroTimer) return;
+		if (!isRunning || !pomodoroTimer) return
 		let timer: NodeJS.Timeout = setInterval(() => {
 			if (pomodoroTimer.timeLeft <= 0) {
-				setIsRunning(false);
-				clearInterval(timer);
+				setIsRunning(false)
+				clearInterval(timer)
 				const newState = {
 					timeLeft: pomodoroSettings.workInterval! * 60,
 					cyclesCount: pomodoroTimer.cyclesCount + 1,
-				};
-				updateTimer(newState);
+				}
+				updateTimer(newState)
 			} else {
 				const updatedState = {
 					...pomodoroTimer,
 					timeLeft: pomodoroTimer.timeLeft - 1,
-				};
-				updateTimer(updatedState);
+				}
+				updateTimer(updatedState)
 			}
-		}, 1000);
+		}, 1000)
 
-		return () => clearInterval(timer);
-	}, [isRunning, pomodoroTimer, pomodoroSettings.workInterval]);
+		return () => clearInterval(timer)
+	}, [isRunning, pomodoroTimer, pomodoroSettings.workInterval])
 
 	const updateCycles = (isAdd: boolean) => {
-		if (!pomodoroTimer) return;
+		if (!pomodoroTimer) return
 		const newCycles = isAdd
 			? pomodoroTimer.cyclesCount + 1
-			: pomodoroTimer.cyclesCount - 1;
+			: pomodoroTimer.cyclesCount - 1
 
-		if (newCycles < 0 || newCycles > pomodoroSettings.intervalsCount)
-			return;
+		if (newCycles < 0 || newCycles > pomodoroSettings.intervalsCount) return
 
 		const newState = {
 			...pomodoroTimer,
 			cyclesCount: newCycles,
-		};
+		}
 
-		updateTimer(newState);
-	};
+		updateTimer(newState)
+	}
 
 	const formatTime = (seconds: number) => {
-		const minutes = Math.floor(seconds / 60);
-		const secs = Math.floor(seconds % 60);
-		return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
+		const minutes = Math.floor(seconds / 60)
+		const secs = Math.floor(seconds % 60)
+		return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(
 			2,
-			"0"
-		)}`;
-	};
+			'0'
+		)}`
+	}
 
 	const handleRefreshIcon = () => {
-		setIsRunning(false);
+		setIsRunning(false)
 		const newState = {
 			cyclesCount: 0,
 			timeLeft: pomodoroSettings.workInterval * 60,
-		};
-		updateTimer(newState);
-	};
+		}
+		updateTimer(newState)
+	}
 
 	return (
 		<div className={s.pomodoro}>
@@ -131,7 +130,7 @@ const PomodoroView: React.FC = () => {
 				<ArrowRight onClick={() => updateCycles(true)} />
 			</ul>
 		</div>
-	);
-};
+	)
+}
 
-export default PomodoroView;
+export default PomodoroView
